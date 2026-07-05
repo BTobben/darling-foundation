@@ -385,6 +385,101 @@ static inline id newDecodedNumber(NSCoder *coder)
 
 @end
 
+/*
+ * Compatibility shim for Darwin binaries that refer to Apple's private
+ * NSConstantIntegerNumber class directly.  Darling currently has no separate
+ * constant-number construction path here, so instances conservatively behave
+ * as the long long integer value 0.  Keeping this private class in Foundation
+ * is enough for the Objective-C runtime to emit the class and metaclass
+ * symbols expected by dyld.
+ */
+@interface NSConstantIntegerNumber : NSNumber
+@end
+
+@implementation NSConstantIntegerNumber
+
+- (const char *)objCType
+{
+    return @encode(long long);
+}
+
+- (char)charValue
+{
+    return (char)[self longLongValue];
+}
+
+- (unsigned char)unsignedCharValue
+{
+    return (unsigned char)[self unsignedLongLongValue];
+}
+
+- (short)shortValue
+{
+    return (short)[self longLongValue];
+}
+
+- (unsigned short)unsignedShortValue
+{
+    return (unsigned short)[self unsignedLongLongValue];
+}
+
+- (int)intValue
+{
+    return (int)[self longLongValue];
+}
+
+- (unsigned int)unsignedIntValue
+{
+    return (unsigned int)[self unsignedLongLongValue];
+}
+
+- (long)longValue
+{
+    return (long)[self longLongValue];
+}
+
+- (unsigned long)unsignedLongValue
+{
+    return (unsigned long)[self unsignedLongLongValue];
+}
+
+- (long long)longLongValue
+{
+    return 0;
+}
+
+- (unsigned long long)unsignedLongLongValue
+{
+    return (unsigned long long)[self longLongValue];
+}
+
+- (float)floatValue
+{
+    return (float)[self longLongValue];
+}
+
+- (double)doubleValue
+{
+    return (double)[self longLongValue];
+}
+
+- (BOOL)boolValue
+{
+    return [self longLongValue] != 0;
+}
+
+- (NSInteger)integerValue
+{
+    return (NSInteger)[self longLongValue];
+}
+
+- (NSUInteger)unsignedIntegerValue
+{
+    return (NSUInteger)[self unsignedLongLongValue];
+}
+
+@end
+
 
 @implementation NSNumber (NSNumberCreation)
 
