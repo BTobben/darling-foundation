@@ -385,97 +385,241 @@ static inline id newDecodedNumber(NSCoder *coder)
 
 @end
 
-/*
- * Compatibility shim for Darwin binaries that refer to Apple's private
- * NSConstantIntegerNumber class directly.  Darling currently has no separate
- * constant-number construction path here, so instances conservatively behave
- * as the long long integer value 0.  Keeping this private class in Foundation
- * is enough for the Objective-C runtime to emit the class and metaclass
- * symbols expected by dyld.
- */
-@interface NSConstantIntegerNumber : NSNumber
+@interface NSConstantIntegerNumber : NSNumber {
+@public
+    const char *_encoding;
+    int64_t _value;
+}
 @end
 
 @implementation NSConstantIntegerNumber
 
 - (const char *)objCType
 {
-    return @encode(long long);
+    return _encoding;
 }
 
 - (char)charValue
 {
-    return (char)[self longLongValue];
+    return (char)_value;
 }
 
 - (unsigned char)unsignedCharValue
 {
-    return (unsigned char)[self unsignedLongLongValue];
+    return (unsigned char)(uint64_t)_value;
 }
 
 - (short)shortValue
 {
-    return (short)[self longLongValue];
+    return (short)_value;
 }
 
 - (unsigned short)unsignedShortValue
 {
-    return (unsigned short)[self unsignedLongLongValue];
+    return (unsigned short)(uint64_t)_value;
 }
 
 - (int)intValue
 {
-    return (int)[self longLongValue];
+    return (int)_value;
 }
 
 - (unsigned int)unsignedIntValue
 {
-    return (unsigned int)[self unsignedLongLongValue];
+    return (unsigned int)(uint64_t)_value;
 }
 
 - (long)longValue
 {
-    return (long)[self longLongValue];
+    return (long)_value;
 }
 
 - (unsigned long)unsignedLongValue
 {
-    return (unsigned long)[self unsignedLongLongValue];
+    return (unsigned long)(uint64_t)_value;
 }
 
 - (long long)longLongValue
 {
-    return 0;
+    return (long long)_value;
 }
 
 - (unsigned long long)unsignedLongLongValue
 {
-    return (unsigned long long)[self longLongValue];
+    return (unsigned long long)(uint64_t)_value;
 }
 
 - (float)floatValue
 {
-    return (float)[self longLongValue];
+    return (float)_value;
 }
 
 - (double)doubleValue
 {
-    return (double)[self longLongValue];
+    return (double)_value;
 }
 
 - (BOOL)boolValue
 {
-    return [self longLongValue] != 0;
+    return _value != 0;
 }
 
 - (NSInteger)integerValue
 {
-    return (NSInteger)[self longLongValue];
+    return (NSInteger)_value;
 }
 
 - (NSUInteger)unsignedIntegerValue
 {
-    return (NSUInteger)[self unsignedLongLongValue];
+    return (NSUInteger)(uint64_t)_value;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%lld", [self longLongValue]];
+}
+
+- (NSString *)descriptionWithLocale:(id)locale
+{
+    return [self description];
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (oneway void)release
+{
+}
+
+- (id)autorelease
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;
+}
+
+@end
+
+@interface NSConstantDoubleNumber : NSNumber {
+@public
+    double _value;
+}
+@end
+
+@implementation NSConstantDoubleNumber
+
+- (const char *)objCType
+{
+    return @encode(double);
+}
+
+- (char)charValue
+{
+    return (char)_value;
+}
+
+- (unsigned char)unsignedCharValue
+{
+    return (unsigned char)_value;
+}
+
+- (short)shortValue
+{
+    return (short)_value;
+}
+
+- (unsigned short)unsignedShortValue
+{
+    return (unsigned short)_value;
+}
+
+- (int)intValue
+{
+    return (int)_value;
+}
+
+- (unsigned int)unsignedIntValue
+{
+    return (unsigned int)_value;
+}
+
+- (long)longValue
+{
+    return (long)_value;
+}
+
+- (unsigned long)unsignedLongValue
+{
+    return (unsigned long)_value;
+}
+
+- (long long)longLongValue
+{
+    return (long long)_value;
+}
+
+- (unsigned long long)unsignedLongLongValue
+{
+    return (unsigned long long)_value;
+}
+
+- (float)floatValue
+{
+    return (float)_value;
+}
+
+- (double)doubleValue
+{
+    return _value;
+}
+
+- (BOOL)boolValue
+{
+    return _value != 0.0;
+}
+
+- (NSInteger)integerValue
+{
+    return (NSInteger)_value;
+}
+
+- (NSUInteger)unsignedIntegerValue
+{
+    return (NSUInteger)_value;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%g", [self doubleValue]];
+}
+
+- (NSString *)descriptionWithLocale:(id)locale
+{
+    return [self description];
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (oneway void)release
+{
+}
+
+- (id)autorelease
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;
 }
 
 @end
