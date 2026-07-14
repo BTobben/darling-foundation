@@ -385,6 +385,245 @@ static inline id newDecodedNumber(NSCoder *coder)
 
 @end
 
+@interface NSConstantIntegerNumber : NSNumber {
+@public
+    const char *_encoding;
+    int64_t _value;
+}
+@end
+
+@implementation NSConstantIntegerNumber
+
+- (const char *)objCType
+{
+    return _encoding;
+}
+
+- (char)charValue
+{
+    return (char)_value;
+}
+
+- (unsigned char)unsignedCharValue
+{
+    return (unsigned char)(uint64_t)_value;
+}
+
+- (short)shortValue
+{
+    return (short)_value;
+}
+
+- (unsigned short)unsignedShortValue
+{
+    return (unsigned short)(uint64_t)_value;
+}
+
+- (int)intValue
+{
+    return (int)_value;
+}
+
+- (unsigned int)unsignedIntValue
+{
+    return (unsigned int)(uint64_t)_value;
+}
+
+- (long)longValue
+{
+    return (long)_value;
+}
+
+- (unsigned long)unsignedLongValue
+{
+    return (unsigned long)(uint64_t)_value;
+}
+
+- (long long)longLongValue
+{
+    return (long long)_value;
+}
+
+- (unsigned long long)unsignedLongLongValue
+{
+    return (unsigned long long)(uint64_t)_value;
+}
+
+- (float)floatValue
+{
+    return (float)_value;
+}
+
+- (double)doubleValue
+{
+    return (double)_value;
+}
+
+- (BOOL)boolValue
+{
+    return _value != 0;
+}
+
+- (NSInteger)integerValue
+{
+    return (NSInteger)_value;
+}
+
+- (NSUInteger)unsignedIntegerValue
+{
+    return (NSUInteger)(uint64_t)_value;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%lld", [self longLongValue]];
+}
+
+- (NSString *)descriptionWithLocale:(id)locale
+{
+    return [self description];
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (oneway void)release
+{
+}
+
+- (id)autorelease
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;
+}
+
+@end
+
+@interface NSConstantDoubleNumber : NSNumber {
+@public
+    double _value;
+}
+@end
+
+@implementation NSConstantDoubleNumber
+
+- (const char *)objCType
+{
+    return @encode(double);
+}
+
+- (char)charValue
+{
+    return (char)_value;
+}
+
+- (unsigned char)unsignedCharValue
+{
+    return (unsigned char)_value;
+}
+
+- (short)shortValue
+{
+    return (short)_value;
+}
+
+- (unsigned short)unsignedShortValue
+{
+    return (unsigned short)_value;
+}
+
+- (int)intValue
+{
+    return (int)_value;
+}
+
+- (unsigned int)unsignedIntValue
+{
+    return (unsigned int)_value;
+}
+
+- (long)longValue
+{
+    return (long)_value;
+}
+
+- (unsigned long)unsignedLongValue
+{
+    return (unsigned long)_value;
+}
+
+- (long long)longLongValue
+{
+    return (long long)_value;
+}
+
+- (unsigned long long)unsignedLongLongValue
+{
+    return (unsigned long long)_value;
+}
+
+- (float)floatValue
+{
+    return (float)_value;
+}
+
+- (double)doubleValue
+{
+    return _value;
+}
+
+- (BOOL)boolValue
+{
+    return _value != 0.0;
+}
+
+- (NSInteger)integerValue
+{
+    return (NSInteger)_value;
+}
+
+- (NSUInteger)unsignedIntegerValue
+{
+    return (NSUInteger)_value;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%g", [self doubleValue]];
+}
+
+- (NSString *)descriptionWithLocale:(id)locale
+{
+    return [self description];
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (oneway void)release
+{
+}
+
+- (id)autorelease
+{
+    return self;
+}
+
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;
+}
+
+@end
+
 
 @implementation NSNumber (NSNumberCreation)
 

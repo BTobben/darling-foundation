@@ -1,5 +1,6 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSNotification.h>
 
 enum {
     NSWindowsNTOperatingSystem = 1,
@@ -20,7 +21,16 @@ typedef struct
 }
 NSOperatingSystemVersion;
 
+typedef NS_ENUM(NSInteger, NSProcessInfoThermalState) {
+    NSProcessInfoThermalStateNominal = 0,
+    NSProcessInfoThermalStateFair = 1,
+    NSProcessInfoThermalStateSerious = 2,
+    NSProcessInfoThermalStateCritical = 3
+};
+
 @class NSArray, NSString, NSDictionary;
+
+FOUNDATION_EXPORT NSNotificationName const NSProcessInfoThermalStateDidChangeNotification;
 
 @interface NSProcessInfo : NSObject
 {
@@ -47,8 +57,11 @@ NSOperatingSystemVersion;
 - (NSUInteger)activeProcessorCount;
 - (unsigned long long)physicalMemory;
 - (NSTimeInterval)systemUptime;
+- (NSProcessInfoThermalState)thermalState;
 - (NSOperatingSystemVersion)operatingSystemVersion;
 - (BOOL)isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion)version;
+
+@property (readonly) NSProcessInfoThermalState thermalState;
 
 @end
 

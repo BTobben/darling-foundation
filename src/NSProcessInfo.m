@@ -29,6 +29,8 @@
 
 extern char ***_NSGetEnviron();
 
+NSNotificationName const NSProcessInfoThermalStateDidChangeNotification = @"NSProcessInfoThermalStateDidChangeNotification";
+
 /*
  TODO: this probably should be more thread safe since some of the underpinnings may not necessarily be
  guaranteed to be stable across all threads; ala setenv etc.
@@ -303,6 +305,11 @@ SINGLETON_RR()
         return 0.0;
     }
     return t.tv_sec + t.tv_usec / (NSTimeInterval)USEC_PER_SEC;
+}
+
+- (NSProcessInfoThermalState)thermalState
+{
+    return NSProcessInfoThermalStateNominal;
 }
 
 - (NSOperatingSystemVersion)operatingSystemVersion
